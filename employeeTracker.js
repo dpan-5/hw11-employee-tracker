@@ -20,7 +20,25 @@ const init = () => {
             choices: choices
         }
     ]).then(({ userSelection }) => {
-        console.log(userSelection);
+        switch(userSelection) {
+            case "View All Employees":
+                employeeDB_CRUD.viewEmployees();
+                break;
+            case "View All Employees By Department":
+                break;
+            case "View All Employees By Manager":
+                break;
+            case "Add Employee":
+                break;
+            case "Remove Employee":
+                break;
+            case "Update Employee Role":
+                break;
+            case "Update Employee Manager":
+                break;
+            default:
+                console.log("Please select something!");
+        }
     });
 }
 
