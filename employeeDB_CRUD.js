@@ -62,6 +62,7 @@ const getManagers = () => {
     });
 }
 
+// Query that returns list of roles
 const getRoles = () => {
     return new Promise((resolve, reject) => {
         connection.query("SELECT * FROM role;", (err, res) => {
@@ -86,12 +87,23 @@ const viewEmployeesByManager = (manager) => {
 }
 
 // Query to add an employee to the employee table
-const addEmployee = (employeeObject) => {
+const addEmployee = (newEmployee) => {
+    // destructuring newEmployee object
+    const { firstName, lastName, role, manager } = newEmployee;
     return new Promise((resolve, reject) => {
-        console.log(employeeObject);
-        resolve();
+        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        SELECT ?, ?, role.id, employee.id
+        FROM role, employee
+        WHERE role.title = ? AND CONCAT(first_name, " ", last_name) = ?;`, [firstName, lastName, role, manager], (err, res) => {
+            if (err) reject(err);
+            console.log("\x1b[34m", "Employee added successfully!");
+            resolve();
+        });
     });
 }
+
+
+
 
 module.exports = {
     viewEmployees,

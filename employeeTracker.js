@@ -47,6 +47,7 @@ const init = () => {
                 await addEmployee();
                 break;
             case "Remove Employee":
+                await removeEmployee();
                 break;
             case "Update Employee Role":
                 break;
@@ -114,20 +115,19 @@ const addEmployee = async () => {
                 message: "What is the employee's last name?"
             },
             {
-                name: "department",
+                name: "role",
                 type: "list",
                 message: "What is the employee's role?",
                 choices: roleChoices
             },
             {
-                name: "role",
+                name: "manager",
                 type: "list",
                 message: "Who is the employee's manager?",
                 choices: [...managerChoices, "None"]
             },
-        ]).then(res => {
-            console.log(res);
-            employeeDB_CRUD.addEmployee(res);
+        ]).then(async res => {
+            await employeeDB_CRUD.addEmployee(res);
             resolve();
         });
     });
