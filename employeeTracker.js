@@ -44,6 +44,7 @@ const init = () => {
                 await viewEmployeesByManager();
                 break;
             case "Add Employee":
+                await addEmployee();
                 break;
             case "Remove Employee":
                 break;
@@ -95,5 +96,41 @@ const viewEmployeesByManager = async () => {
     });
 }
 
+const addEmployee = async () => {
+    let roleChoices = await employeeDB_CRUD.getRoles();
+    roleChoices = roleChoices.map(role => role.title);
+    let managerChoices = await employeeDB_CRUD.getManagers();
+    managerChoices = managerChoices.map(manager => manager.Name);
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "firstName",
+                type: "input",
+                message: "What is the employee's first name?"
+            },
+            {
+                name: "lastName",
+                type: "input",
+                message: "What is the employee's last name?"
+            },
+            {
+                name: "department",
+                type: "list",
+                message: "What is the employee's role?",
+                choices: roleChoices
+            },
+            {
+                name: "role",
+                type: "list",
+                message: "Who is the employee's manager?",
+                choices: [...managerChoices, "None"]
+            },
+        ]).then(res => {
+            console.log(res);
+            employeeDB_CRUD.addEmployee(res);
+            resolve();
+        });
+    });
+}
 
 init();

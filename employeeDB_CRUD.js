@@ -62,6 +62,15 @@ const getManagers = () => {
     });
 }
 
+const getRoles = () => {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM role;", (err, res) => {
+            if (err) reject(err);
+            resolve(res);
+        });
+    });
+}
+
 // Query to view all employees by manager
 const viewEmployeesByManager = (manager) => {
    return new Promise((resolve, reject) => {
@@ -72,15 +81,24 @@ const viewEmployeesByManager = (manager) => {
            if (err) reject(err);
            console.table(res);
            resolve();
-       })
-   }) 
+       });
+   }); 
 }
 
+// Query to add an employee to the employee table
+const addEmployee = (employeeObject) => {
+    return new Promise((resolve, reject) => {
+        console.log(employeeObject);
+        resolve();
+    });
+}
 
 module.exports = {
     viewEmployees,
     viewEmployeesByDepartment,
     viewEmployeesByManager,
+    addEmployee,
     getDepartments,
-    getManagers
+    getManagers,
+    getRoles
 }
