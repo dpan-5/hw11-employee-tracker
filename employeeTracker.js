@@ -154,7 +154,33 @@ const removeEmployee = async () => {
 }
 
 const updateEmployeeRole = async () => {
-    
+    // Returns array of employees from employee table
+    let employeeChoices = await employeeDB_CRUD.getEmployees();
+    employeeChoices = employeeChoices.map(employee => employee.EmployeeName);
+
+    // Returns array of roles from role table
+    let roleChoices = await employeeDB_CRUD.getRoles();
+    roleChoices = roleChoices.map(role => role.title);
+
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "employeeName",
+                type: "list",
+                message: "Which employee would you like to update the role of?",
+                choices: employeeChoices
+            },
+            {
+                name: "role",
+                type: "list",
+                message: "What role do you want to assign to this employee?",
+                choices: roleChoices
+            }
+        ]).then(async res => {
+            await employeeDB_CRUD.updateEmployeeRole(res);
+            resolve();
+        });
+    });
 }
 
 

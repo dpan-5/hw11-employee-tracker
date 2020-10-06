@@ -136,6 +136,19 @@ const removeEmployee = (employee) => {
     });
 }
 
+// Query to update an employee's role
+const updateEmployeeRole = (employee) => {
+    const { employeeName, role } = employee;
+    return new Promise((resolve, reject) => {
+        connection.query(`UPDATE employee
+        SET role_id = (SELECT id FROM role WHERE title = ?)
+        WHERE CONCAT(first_name, " ", last_name) = ?;`, [role, employeeName], (err, res) => {
+            if (err) reject(err);
+            console.log("\x1b[34m", "Employee successfully updated!");
+            resolve();
+        });
+    });
+}
 
 
 module.exports = {
@@ -144,6 +157,7 @@ module.exports = {
     viewEmployeesByManager,
     addEmployee,
     removeEmployee,
+    updateEmployeeRole,
     getDepartments,
     getManagers,
     getRoles,
