@@ -19,12 +19,13 @@ const init = () => {
             message: "What would you like to do?",
             choices: choices
         }
-    ]).then(({ userSelection }) => {
+    ]).then(async ({ userSelection }) => {
         switch(userSelection) {
             case "View All Employees":
-                employeeDB_CRUD.viewEmployees();
+                await employeeDB_CRUD.viewEmployees();
                 break;
             case "View All Employees By Department":
+                await viewEmployeesByDepartment();
                 break;
             case "View All Employees By Manager":
                 break;
@@ -39,6 +40,24 @@ const init = () => {
             default:
                 console.log("Please select something!");
         }
+        init();
+    });
+}
+
+
+const viewEmployeesByDepartment = async () => {
+    const choices = await employeeDB_CRUD.getDepartments();
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "department",
+                type: "list",
+                message: "Please select a department: ",
+                choices: choices
+            }
+        ]).then( ({ department }) => {
+            employeeDB_CRUD.viewEmployeesByDepartment(department);
+        });
     });
 }
 
