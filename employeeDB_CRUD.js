@@ -72,6 +72,16 @@ const getRoles = () => {
     });
 }
 
+// Query that returns list of employees
+const getEmployees = () => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT id, CONCAT(first_name, " ", last_name) AS "EmployeeName" FROM employee;', (err, res) => {
+            if (err) reject(err);
+            resolve(res);
+        })
+    });
+}
+
 // Query to view all employees by manager
 const viewEmployeesByManager = (manager) => {
    return new Promise((resolve, reject) => {
@@ -91,17 +101,40 @@ const addEmployee = (newEmployee) => {
     // destructuring newEmployee object
     const { firstName, lastName, role, manager } = newEmployee;
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
-        SELECT ?, ?, role.id, employee.id
-        FROM role, employee
-        WHERE role.title = ? AND CONCAT(first_name, " ", last_name) = ?;`, [firstName, lastName, role, manager], (err, res) => {
+        if(manager === "None") {
+            connection.query(`INSERT INTO employee (first_name, last_name, role_id)
+            SELECT ?, ?, role.id
+            FROM role
+            WHERE role.title = ?;`, [firstName, lastName, role], (err, res) => {
+                if (err) reject(err);
+                console.log("\x1b[34m", "Employee added successfully!");
+                resolve();
+            });
+        } else {
+            connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+            SELECT ?, ?, role.id, employee.id
+            FROM role, employee
+            WHERE role.title = ? AND CONCAT(first_name, " ", last_name) = ?;`, [firstName, lastName, role, manager], (err, res) => {
+                if (err) reject(err);
+                console.log("\x1b[34m", "Employee added successfully!");
+                resolve();
+            });
+        }
+        
+        // resolve();
+    });
+}
+
+// Query to remove an employee from the employee table
+const removeEmployee = (employee) => {
+    return new Promise((resolve, reject) => {
+        connection.query('DELETE FROM employee WHERE CONCAT(first_name, " ", last_name) = ?;', employee, (err, res) => {
             if (err) reject(err);
-            console.log("\x1b[34m", "Employee added successfully!");
+            console.log("\x1b[34m", "Employee deleted successfully!");
             resolve();
         });
     });
 }
-
 
 
 
@@ -110,7 +143,9 @@ module.exports = {
     viewEmployeesByDepartment,
     viewEmployeesByManager,
     addEmployee,
+    removeEmployee,
     getDepartments,
     getManagers,
-    getRoles
+    getRoles,
+    getEmployees
 }

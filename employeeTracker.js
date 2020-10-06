@@ -50,6 +50,7 @@ const init = () => {
                 await removeEmployee();
                 break;
             case "Update Employee Role":
+                await updateEmployeeRole()
                 break;
             case "Update Employee Manager":
                 break;
@@ -132,5 +133,30 @@ const addEmployee = async () => {
         });
     });
 }
+
+const removeEmployee = async () => {
+    // Grab list of employees from DB to display as choices to user
+    let employeeChoices = await employeeDB_CRUD.getEmployees();
+    employeeChoices = employeeChoices.map(employee => employee.EmployeeName);
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "employee",
+                type: "list",
+                message: "Which employee would you like to remove?",
+                choices: employeeChoices
+            }
+        ]).then(async ({ employee }) => {
+            await employeeDB_CRUD.removeEmployee(employee);
+            resolve();
+        });
+    });
+}
+
+const updateEmployeeRole = async () => {
+    
+}
+
+
 
 init();
