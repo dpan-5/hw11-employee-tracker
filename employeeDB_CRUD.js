@@ -188,6 +188,17 @@ const addDepartment = (department) => {
     })
 }
 
+// Query to view all roles
+const viewAllRoles = () => {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM role", (err, res) => {
+            if (err) reject(err);
+            console.table(res);
+            resolve();
+        });
+    }); 
+}
+
 module.exports = {
     viewEmployees,
     viewEmployeesByDepartment,
@@ -201,5 +212,6 @@ module.exports = {
     getRoles,
     getEmployees,
     viewAllDepartments,
-    addDepartment
+    addDepartment,
+    viewAllRoles
 }

@@ -66,9 +66,9 @@ const init = () => {
             case "Add Department":
                 await addDepartment();
                 break;    
-            // case "View All Roles":
-            //     await ;
-            //     break; 
+            case "View All Roles":
+                await employeeDB_CRUD.viewAllRoles();
+                break; 
             // case "Add Role":
             //     await ;
             //     break;     
