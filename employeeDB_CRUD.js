@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
     if(err) throw err;
-})
+});
 
 // Query to view all employees
 const viewEmployees = () => {
@@ -96,6 +96,7 @@ const viewEmployeesByManager = (manager) => {
    }); 
 }
 
+
 // Query to add an employee to the employee table
 const addEmployee = (newEmployee) => {
     // destructuring newEmployee object
@@ -120,8 +121,6 @@ const addEmployee = (newEmployee) => {
                 resolve();
             });
         }
-        
-        // resolve();
     });
 }
 
