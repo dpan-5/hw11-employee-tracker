@@ -149,6 +149,20 @@ const updateEmployeeRole = (employee) => {
     });
 }
 
+// Query to update an employee's manager
+const updateEmployeeManager = (manager, employee) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`UPDATE employee 
+        SET manager_id = (SELECT id FROM (SELECT id FROM employee WHERE CONCAT(first_name, " ", last_name) = ?) AS x)
+        WHERE CONCAT(first_name, " ", last_name) = ?;`, [manager, employee], (err, res) => {
+            if (err) reject(err);
+            console.log("\x1b[34m", "Employee's manager successfully updated!");
+            resolve();
+        });
+    });
+}
+
+
 
 module.exports = {
     viewEmployees,
@@ -157,6 +171,7 @@ module.exports = {
     addEmployee,
     removeEmployee,
     updateEmployeeRole,
+    updateEmployeeManager,
     getDepartments,
     getManagers,
     getRoles,

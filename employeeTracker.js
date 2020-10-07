@@ -53,6 +53,7 @@ const init = () => {
                 await updateEmployeeRole()
                 break;
             case "Update Employee Manager":
+                await updateEmployeeManager();
                 break;
             default:
                 console.log("Please select something!");
@@ -179,6 +180,37 @@ const updateEmployeeRole = async () => {
         ]).then(async res => {
             await employeeDB_CRUD.updateEmployeeRole(res);
             resolve();
+        });
+    });
+}
+
+const updateEmployeeManager = async () => {
+    let employeeToUpdate;
+    let employeeChoices = await employeeDB_CRUD.getEmployees();
+    employeeChoices = employeeChoices.map(employee => employee.EmployeeName);
+
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "employeeName",
+                type: "list",
+                message: "Which employee would you like to update the role of?",
+                choices: employeeChoices
+            },
+        ]).then(({ employeeName }) => {
+            employeeToUpdate = employeeName;
+            inquirer.prompt([
+                {
+                    name: "managerName",
+                    type: "list",
+                    message: "Which person do you want to assign to this employee as manager?",
+                    choices: () => employeeChoices.filter(employee => employee !== employeeName)
+                }
+            ]).then(async ({ managerName }) => {
+                console.log(managerName, employeeToUpdate);
+                await employeeDB_CRUD.updateEmployeeManager(managerName, employeeToUpdate);
+                resolve();
+            });
         });
     });
 }
