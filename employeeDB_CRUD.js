@@ -16,7 +16,11 @@ connection.connect(err => {
 // Query to view all employees
 const viewEmployees = () => {
     return new Promise((resolve, reject) => {
-        connection.query("SELECT * FROM employee", (err, res) => {
+        connection.query(`SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name, CONCAT(em.first_name, " ", em.last_name) AS "manager"
+        FROM employee e
+        LEFT JOIN employee em ON em.id = e.manager_id
+        INNER JOIN role r ON e.role_id = r.id
+        INNER JOIN department d ON r.department_id = d.id`, (err, res) => {
             if (err) reject(err);
             console.table(res);
             resolve();
@@ -162,6 +166,17 @@ const updateEmployeeManager = (manager, employee) => {
     });
 }
 
+// Query to view all departments
+const viewAllDepartments = () => {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM department", (err, res) => {
+            if (err) reject(err);
+            console.table(res);
+            resolve();
+        });
+    }); 
+}
+
 
 
 module.exports = {
@@ -175,5 +190,6 @@ module.exports = {
     getDepartments,
     getManagers,
     getRoles,
-    getEmployees
+    getEmployees,
+    viewAllDepartments
 }

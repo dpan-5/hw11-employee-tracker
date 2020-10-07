@@ -8,9 +8,14 @@ const choices = [
     "Add Employee",
     "Remove Employee",
     "Update Employee Role",
-    "Update Employee Manager"
+    "Update Employee Manager",
+    "View All Departments",
+    "Add Department",
+    "View All Roles",
+    "Add Role"
 ];
 
+// ASCII ART
 console.log("\x1b[34m",
     `
 |----------------------------------------------------------------------------|                                                             
@@ -55,6 +60,18 @@ const init = () => {
             case "Update Employee Manager":
                 await updateEmployeeManager();
                 break;
+            case "View All Departments":
+                await employeeDB_CRUD.viewAllDepartments();
+                break;
+            case "Add Department":
+                await addDepartment();
+                break;    
+            // case "View All Roles":
+            //     await ;
+            //     break; 
+            // case "Add Role":
+            //     await ;
+            //     break;     
             default:
                 console.log("Please select something!");
         }
@@ -215,6 +232,8 @@ const updateEmployeeManager = async () => {
     });
 }
 
+const addDepartment = () => {
 
+}
 
 init();
