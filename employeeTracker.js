@@ -69,9 +69,9 @@ const init = () => {
             case "View All Roles":
                 await employeeDB_CRUD.viewAllRoles();
                 break; 
-            // case "Add Role":
-            //     await ;
-            //     break;     
+            case "Add Role":
+                await addRole();
+                break;     
             default:
                 console.log("Please select something!");
         }
@@ -246,5 +246,33 @@ const addDepartment = async () => {
         });
     });
 }
+
+const addRole = async () => {
+    let departmentChoices = await employeeDB_CRUD.getDepartments();
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "title",
+                type: "input",
+                message: "What is the title of the role you'd like to add?"
+            },
+            {
+                name: "salary",
+                type: "number",
+                message: "What is the salary of this role?"
+            },
+            {
+                name: "department",
+                type: "list",
+                message: "What department does this role belong to?",
+                choices: departmentChoices
+            },
+        ]).then(async res => {
+            await employeeDB_CRUD.addRole(res);
+            resolve();
+        });
+    });
+}
+
 
 init();

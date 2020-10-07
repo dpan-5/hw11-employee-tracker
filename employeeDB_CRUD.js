@@ -199,6 +199,18 @@ const viewAllRoles = () => {
     }); 
 }
 
+const addRole = (roleObject) => {
+    const { title, salary, department } = roleObject;
+    return new Promise((resolve, reject) => {
+        connection.query(`INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, (SELECT id FROM department WHERE name = ?))`, [title, salary, department], (err, res) => {
+            if (err) reject(err);
+            console.log("\x1b[34m", "Role successfully added!");
+            resolve();
+        });
+    });
+}
+
 module.exports = {
     viewEmployees,
     viewEmployeesByDepartment,
@@ -213,5 +225,6 @@ module.exports = {
     getEmployees,
     viewAllDepartments,
     addDepartment,
-    viewAllRoles
+    viewAllRoles,
+    addRole
 }
