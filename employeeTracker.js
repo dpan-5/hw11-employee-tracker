@@ -232,8 +232,19 @@ const updateEmployeeManager = async () => {
     });
 }
 
-const addDepartment = () => {
-
+const addDepartment = async () => {
+    return new Promise((resolve, reject) => {
+        inquirer.prompt([
+            {
+                name: "department",
+                type: "input",
+                message: "What department would you like to add?",
+            },
+        ]).then(async ({ department }) => {
+            await employeeDB_CRUD.addDepartment(department);
+            resolve();
+        });
+    });
 }
 
 init();

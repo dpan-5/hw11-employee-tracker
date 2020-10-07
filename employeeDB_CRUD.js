@@ -177,7 +177,16 @@ const viewAllDepartments = () => {
     }); 
 }
 
-
+// Query to add a department to the departments table
+const addDepartment = (department) => {
+    return new Promise((resolve, reject) => {
+        connection.query("INSERT INTO department (name) VALUE (?)", department, (err, res) => {
+            if (err) reject(err);
+            console.log("\x1b[34m", "Department successfully added!");
+            resolve();
+        });
+    })
+}
 
 module.exports = {
     viewEmployees,
@@ -191,5 +200,6 @@ module.exports = {
     getManagers,
     getRoles,
     getEmployees,
-    viewAllDepartments
+    viewAllDepartments,
+    addDepartment
 }
