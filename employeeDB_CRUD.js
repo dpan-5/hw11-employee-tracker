@@ -16,7 +16,7 @@ connection.connect(err => {
 // Query to view all employees
 const viewEmployees = () => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name, CONCAT(em.first_name, " ", em.last_name) AS "manager"
+        connection.query(`SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name as "department name", CONCAT(em.first_name, " ", em.last_name) AS "manager"
         FROM employee e
         LEFT JOIN employee em ON em.id = e.manager_id
         INNER JOIN role r ON e.role_id = r.id

@@ -274,5 +274,4 @@ const addRole = async () => {
     });
 }
 
-
 init();
